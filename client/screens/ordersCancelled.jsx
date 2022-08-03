@@ -51,8 +51,13 @@ const ordersCancelled = ({ route }) => {
   // };
 
   const handleUndo = async (orderid) => {
+    const order2Ref=  await db.collection('orders').where('orderid', '==', orderid)
+    const data = await order2Ref.get();
+    const order = data.docs.map((doc) => doc.data());
     await db.collection("orders").doc(orderid).update({
       status: "Pending",
+      orderStatus: order[0].orderStatusBeforeReject,
+      actionCode:order[0].actionCodeBeforeReject,
       
     });
     setReload(!reload);

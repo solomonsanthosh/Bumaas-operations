@@ -6,6 +6,8 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from "react-native";
+import { LogBox } from 'react-native';
+LogBox.ignoreLogs(['Setting a timer']);
 import React, { useEffect, useState } from "react";
 
 import XLSX from "xlsx";
@@ -43,11 +45,11 @@ const tabs = ({ navigation }) => {
 
   const handleExcel1 = async () => {
 	await Promise.all(customerWise.map(async (item) => {
-        const nameRef = db
+        const nameRef = await db
           .collection("customers")
           .where("id", "==", item.customerid);
 
-        const projectRef = db
+        const projectRef = await db
           .collection("projects")
           .where("Projectname", "==", item.Projectname);
         const data2 = await nameRef.get();
@@ -60,7 +62,7 @@ const tabs = ({ navigation }) => {
 		// console.log(inv,'a');
         var invgrp = [];
         await Promise.all(inv.map(async (element) => {
-          const invRef = db
+          const invRef = await db
             .collection("inventory")
             .where("BestPartNumber", "==", element);
           const data4 = await invRef.get();

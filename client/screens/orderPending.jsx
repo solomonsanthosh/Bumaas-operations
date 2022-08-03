@@ -51,9 +51,16 @@ const orderPending = ({ route }) => {
   // 		);
   // };
   const handleCancel = async (orderid) => {
+   const order2Ref=  await db.collection('orders').where('orderid', '==', orderid)
+    const data = await order2Ref.get();
+    const order = data.docs.map((doc) => doc.data());
+    console.log(order);
     await db.collection("orders").doc(orderid).update({
       status: "Cancelled",
-      OrderStatus: 'red'
+      orderStatus: 'red',
+      actionCode:'Rejected',
+      orderStatusBeforeReject: order[0].orderStatus,
+      actionCodeBeforeReject:order[0].actionCode
     });
     setReload(!reload);
   };
