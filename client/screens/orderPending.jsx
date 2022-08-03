@@ -28,7 +28,7 @@ const image = {
 const orderPending = ({ route }) => {
   const [refreshing, setRefreshing] = useState(false);
 
-  const orderRef = db.collection("orders").where("Status", "==", "Pending");
+  const orderRef = db.collection("orders").where("status", "==", "Pending");
   const navigation = useNavigation();
   const [orders, setOrders] = useState([]);
   const [search, setSearch] = useState("");
@@ -52,7 +52,8 @@ const orderPending = ({ route }) => {
   // };
   const handleCancel = async (orderid) => {
     await db.collection("orders").doc(orderid).update({
-      Status: "Cancelled",
+      status: "Cancelled",
+      OrderStatus: 'red'
     });
     setReload(!reload);
   };
@@ -61,7 +62,7 @@ const orderPending = ({ route }) => {
   }
   const handleUndo = async (orderid) => {
     await db.collection("orders").doc(orderid).update({
-      Status: "Pending",
+      status: "Pending",
     });
     setReload(!reload);
   };
@@ -75,7 +76,8 @@ const orderPending = ({ route }) => {
 
   const handleConfirm = async (orderid) => {
     await db.collection("orders").doc(orderid).update({
-      Status: "Completed",
+      status: "Completed",
+      OrderStatus: 'blue'
     });
     setReload(!reload);
   };
@@ -92,7 +94,7 @@ const orderPending = ({ route }) => {
               <View style={styles.maincard}>
                 <View style={styles.miniCard}>
                   <Text style={[styles.textquestion, styles.miniCardText]}>
-                    Project name:
+                    Order ID
                   </Text>
                   <Text
                     style={[
@@ -102,7 +104,7 @@ const orderPending = ({ route }) => {
                       },
                     ]}
                   >
-                    {order.Projectname}
+                    {order.orderid}
                   </Text>
                 </View>
 
@@ -151,6 +153,7 @@ const orderPending = ({ route }) => {
                     onPress={() =>
                       navigation.push("orderDetails", {
                         orderid: order.orderid,
+                        status: 'Pending'
                       })
                     }
                     style={{

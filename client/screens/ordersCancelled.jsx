@@ -27,7 +27,7 @@ const image = {
   uri: "https://www.fonewalls.com/wp-content/uploads/2019/10/Gradient-Background-Wallpaper-013-300x585.jpg",
 };
 const ordersCancelled = ({ route }) => {
-  const orderRef = db.collection("orders").where("Status", "==", "Cancelled");
+  const orderRef = db.collection("orders").where("status", "==", "Cancelled");
   const navigation = useNavigation();
   const [orders, setOrders] = useState([]);
   const [search, setSearch] = useState("");
@@ -52,7 +52,8 @@ const ordersCancelled = ({ route }) => {
 
   const handleUndo = async (orderid) => {
     await db.collection("orders").doc(orderid).update({
-      Status: "Pending",
+      status: "Pending",
+      
     });
     setReload(!reload);
   };
@@ -75,11 +76,11 @@ const ordersCancelled = ({ route }) => {
             <View style={styles.maincard}>
               <View style={styles.miniCard}>
                 <Text style={[styles.textquestion, styles.miniCardText]}>
-                  Project name:
+                  Order ID
                 </Text>
                 <Text style={[styles.textquestion,{
                     color: '#4B7BE5'
-                  }]}>{order.Projectname}</Text>
+                  }]}>{order.orderid}</Text>
               </View>
               <View
                 style={{

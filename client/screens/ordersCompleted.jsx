@@ -35,7 +35,7 @@ const ordersCompleted = ({ route }) => {
 	const wait = (timeout) => {
 		return new Promise(resolve => setTimeout(resolve, timeout));
 	  }
-	const orderRef = db.collection('orders').where('Status', '==', 'Completed');
+	const orderRef = db.collection('orders').where('status', '==', 'Completed');
 	const navigation = useNavigation();
 	const [orders, setOrders] = useState([]);
 	const [search, setSearch] = useState('');
@@ -85,11 +85,11 @@ const ordersCompleted = ({ route }) => {
 					>
 						<View style={styles.miniCard}>
                   <Text style={[styles.textquestion, styles.miniCardText]}>
-                    Project name:
+                    Order ID
                   </Text>
                   <Text style={[styles.textquestion,{
                     color: '#4B7BE5'
-                  }]}>{order.Projectname}</Text>
+                  }]}>{order.orderid}</Text>
                 </View>
 						<View style={{
 							flexDirection:'row',

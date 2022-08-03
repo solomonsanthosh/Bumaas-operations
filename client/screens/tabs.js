@@ -70,6 +70,7 @@ const tabs = ({ navigation }) => {
             Productgrp: data4.docs[0].data().Productgrp,
             Weight: data4.docs[0].data().Weightperpieceingrams,
             StandardBoxQty: data4.docs[0].data().StdBoxquantity,
+            normsperproject: data4.docs[0].data().normsperproject,
 		  }
 		  console.log(invobj,'invobj');
           invgrp.push(invobj);
@@ -79,19 +80,19 @@ const tabs = ({ navigation }) => {
         // console.log(project, customername);
         excel.push({
           CustomerName: data2.docs[0].data().CustomerName,
-          Forcastno: `${item.Forcastid}/${item.TimeStamp}`,
+          Forcastno: `${item.Forecastid}/${item.TimeStamp}`,
           Projectname: data3.docs[0].data().Projectname,
           CustomerPartNo: data3.docs[0].data().CustomerPartNumber,
           BestPartNo: data3.docs[0].data().BestPartNumber,
           BestPartNoDetails: JSON.stringify(invgrp),
-          NormsPerProject: data3.docs[0].data().norms_per_project,
+          
           ForecastedQtyForThisMonth: item.Qtm[0],
           ActualProduction: item.actual_production,
           ForecastVariation:
             1 - (item.Qtm[0] - item.actual_production) / item.Qtm[0],
           DemandTriiggereddatetime: "-",
           RefillingDateTime: "-",
-          Servicelevelaccepteddays: item.AcceptedDays,
+          Servicelevelaccepteddays: 10,
           OnTimeDelivery: "-",
         });
 		
@@ -160,7 +161,7 @@ const tabs = ({ navigation }) => {
             1 - (item.Qtm[0] - item.actual_production) / item.Qtm[0],
           DemandTriiggereddatetime: "-",
           RefillingDateTime: "-",
-          Servicelevelaccepteddays: item.AcceptedDays,
+          Servicelevelaccepteddays: 10,
           OnTimeDelivery: "-",
         });
           }))
@@ -173,12 +174,12 @@ const tabs = ({ navigation }) => {
       setModalVisible(!modalVisible);
       var ws = XLSX.utils.json_to_sheet(excel);
       var wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, "CustomerWise");
+      XLSX.utils.book_append_sheet(wb, ws, "BestPartWise");
       const wbout = XLSX.write(wb, {
         type: "base64",
         bookType: "xlsx",
       });
-      const uri = FileSystem.cacheDirectory + "CustomerWise.xlsx";
+      const uri = FileSystem.cacheDirectory + "BestPartWise.xlsx";
       console.log(`Writing to ${JSON.stringify(uri)} with text: ${wbout}`);
       await FileSystem.writeAsStringAsync(uri, wbout, {
         encoding: FileSystem.EncodingType.Base64,
